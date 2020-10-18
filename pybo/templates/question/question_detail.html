@@ -8,11 +8,25 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;">{{ question.content }}</div>
             <div class="d-flex justify-content-end">
+                {% if question.modify_date %}
+                <div class="badge badge-light p-2 text-left mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div>{{ question.modify_date|datetime }}</div>
+                </div>
+                {% endif %}
                 <div class="badge badge-light p-2 text-left">
                     <div class="mb-2">{{ question.user.username }}</div>
                     <div>{{ question.create_date }}</div>
                 </div>
             </div>
+            {% if g.user == question.user %}
+            <div class="my-3">
+                <a href="{{ url_for('question.modify', question_id=question.id) }}"
+                   class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                   data-uri="{{ url_for('question.delete', question_id=question.id) }}">삭제</a>
+            </div>
+            {% endif %}
         </div>
     </div>
     <h5 class="border-bottom my-3 py-2">{{ question.answer_set|length }}개의 답변이 있습니다.</h5>
@@ -21,11 +35,26 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;">{{ answer.content }}</div>
             <div class="d-flex justify-content-end">
+                {% if answer.modify_date %}
+                <div class="badge badge-light p-2 text-left mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div>{{ answer.modify_date|datetime }}</div>
+                </div>
+                {% endif %}
+
                 <div class="badge badge-light p-2 text-left">
                     <div class="mb-2">{{ answer.user.username }}</div>
                     <div>{{ answer.create_date }}</div>
                 </div>
             </div>
+            {% if g.user == answer.user %}
+            <div class="my-3">
+                <a href="{{ url_for('answer.modify', answer_id=answer.id) }}"
+                   class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="#" class="delete btn btn-sm btn-outline-secondary "
+                   data-uri="{{ url_for('answer.delete', answer_id=answer.id) }}">삭제</a>
+            </div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
@@ -45,4 +74,16 @@
     </form>
 </div>
 {% endblock %}
-
+<!-- ---------------------------------------- [edit] ---------------------------------------- -->
+{% block script %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $(".delete").on('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = $(this).data('uri');
+        }
+    });
+});
+</script>
+{% endblock %}
+<!-- ---------------------------------------------------------------------------------------- -->
