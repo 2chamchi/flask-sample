@@ -41,6 +41,7 @@
                     {% if question.comment_set|length > 0 %}
                     <div class="mt-3">
                         {% for comment in question.comment_set %}
+                        <a name="comment_{{ comment.id }}"></a>
                         <div class="comment py-2 text-muted">
                             <span style="white-space: pre-line;">{{ comment.content }}</span>
                             <span>
@@ -71,6 +72,7 @@
 
     <h5 class="border-bottom my-3 py-2">{{ question.answer_set|length }}개의 답변이 있습니다.</h5>
     {% for answer in question.answer_set %}
+    <a name="answer_{{ answer.id }}"></a>
 
     <div class="row my-3">
         <div class="col-1">  <!-- 추천영역 -->
@@ -106,6 +108,7 @@
                     {% if answer.comment_set|length > 0 %}
                     <div class="mt-3">
                         {% for comment in answer.comment_set %}
+                        <a name="comment_{{ comment.id }}"></a>
                         <div class="comment py-2 text-muted">
                             <span style="white-space: pre-line;">{{ comment.content }}</span>
                             <span>
